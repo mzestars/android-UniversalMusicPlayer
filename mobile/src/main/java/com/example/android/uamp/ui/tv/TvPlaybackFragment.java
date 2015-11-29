@@ -15,6 +15,7 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -56,6 +58,7 @@ import java.util.List;
 /*
  * Show details of the currently playing song, along with playback controls and the playing queue.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvPlaybackFragment extends android.support.v17.leanback.app.PlaybackOverlayFragment {
     private static final String TAG = LogHelper.makeLogTag(TvPlaybackFragment.class);
 

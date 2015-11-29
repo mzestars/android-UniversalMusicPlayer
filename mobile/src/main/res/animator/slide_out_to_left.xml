@@ -15,7 +15,9 @@
   limitations under the License.
   -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
      android:interpolator="@android:interpolator/fast_out_slow_in"
+     tools:targetApi="lollipop"
      android:ordering="together">
     <objectAnimator
         android:propertyName="x"

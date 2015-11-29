@@ -15,6 +15,7 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,12 +26,13 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaDescription;
+import android.media.browse.MediaBrowser;
+import android.media.session.MediaSession;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +40,7 @@ import com.example.android.uamp.AlbumArtCache;
 import com.example.android.uamp.R;
 import com.example.android.uamp.utils.LogHelper;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CardPresenter extends Presenter {
     private static final String TAG = LogHelper.makeLogTag(CardPresenter.class);
     private static final int CARD_WIDTH = 300;
@@ -59,13 +62,13 @@ public class CardPresenter extends Presenter {
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-        MediaDescriptionCompat description;
-        if (item instanceof  MediaBrowserCompat.MediaItem) {
-            MediaBrowserCompat.MediaItem mediaItem = (MediaBrowserCompat.MediaItem) item;
+        MediaDescription description;
+        if (item instanceof  MediaBrowser.MediaItem) {
+            MediaBrowser.MediaItem mediaItem = (MediaBrowser.MediaItem) item;
             LogHelper.d(TAG, "onBindViewHolder MediaItem: ", mediaItem.toString());
             description = mediaItem.getDescription();
-        } else if (item instanceof MediaSessionCompat.QueueItem) {
-            MediaSessionCompat.QueueItem queueItem = (MediaSessionCompat.QueueItem) item;
+        } else if (item instanceof MediaSession.QueueItem) {
+            MediaSession.QueueItem queueItem = (MediaSession.QueueItem) item;
             description = queueItem.getDescription();
         } else {
             throw new IllegalArgumentException("Object must be MediaItem or QueueItem, not "

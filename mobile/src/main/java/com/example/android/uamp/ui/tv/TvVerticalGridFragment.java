@@ -15,10 +15,12 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.browse.MediaBrowser;
 import android.media.browse.MediaBrowser.MediaItem;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -38,6 +40,7 @@ import java.util.List;
 /*
  * VerticalGridFragment shows a grid of music songs
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvVerticalGridFragment extends android.support.v17.leanback.app.VerticalGridFragment {
     private static final String TAG = LogHelper.makeLogTag(TvVerticalGridFragment.class);
 

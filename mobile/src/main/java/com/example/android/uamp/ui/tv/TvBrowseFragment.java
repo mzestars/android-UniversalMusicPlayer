@@ -15,6 +15,7 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaMetadata;
@@ -23,6 +24,7 @@ import android.media.browse.MediaBrowser.MediaItem;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSession.QueueItem;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v17.leanback.app.BrowseFragment;
@@ -67,6 +69,7 @@ import java.util.List;
  * This fragment also shows the MediaSession queue ("now playing" list), in case there is
  * something playing.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvBrowseFragment extends BrowseFragment {
 
     private static final String TAG = LogHelper.makeLogTag(TvBrowseFragment.class);

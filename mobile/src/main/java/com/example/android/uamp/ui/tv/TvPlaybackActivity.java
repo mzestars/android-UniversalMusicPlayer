@@ -15,12 +15,14 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.media.MediaMetadata;
 import android.media.browse.MediaBrowser;
 import android.media.session.MediaController;
 import android.media.session.PlaybackState;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -32,6 +34,7 @@ import com.example.android.uamp.utils.LogHelper;
  * Activity used to display details of the currently playing song, along with playback controls
  * and the playing queue.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvPlaybackActivity extends Activity {
     private static final String TAG = LogHelper.makeLogTag(TvPlaybackActivity.class);
 

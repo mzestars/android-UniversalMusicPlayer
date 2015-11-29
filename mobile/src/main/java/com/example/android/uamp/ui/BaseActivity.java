@@ -49,11 +49,11 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
 
         // Since our app icon has the same color as colorPrimary, our entry in the Recent Apps
         // list gets weird. We need to change either the icon or the color of the TaskDescription.
-        ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(
-            getTitle().toString(),
-            BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_white),
-            ResourceHelper.getThemeColor(this, R.attr.colorPrimary, android.R.color.darker_gray));
-        setTaskDescription(taskDesc);
+//        ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(
+//            getTitle().toString(),
+//            BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_white),
+//            ResourceHelper.getThemeColor(this, R.attr.colorPrimary, android.R.color.darker_gray));
+//        setTaskDescription(taskDesc);
 
         // Connect a media browser just to get the media session token. There are other ways
         // this can be done, for example by sharing the session token directly.
@@ -100,9 +100,9 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
         LogHelper.d(TAG, "showPlaybackControls");
         if (NetworkHelper.isOnline(this)) {
             getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(
-                    R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom,
-                    R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom)
+//                .setCustomAnimations(
+//                    R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom,
+//                    R.animator.slide_in_from_bottom, R.animator.slide_out_to_bottom)
                 .show(mControlsFragment)
                 .commit();
         }

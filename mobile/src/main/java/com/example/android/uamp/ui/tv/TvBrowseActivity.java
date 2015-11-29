@@ -15,11 +15,13 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.media.browse.MediaBrowser;
 import android.media.session.MediaController;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -30,6 +32,7 @@ import com.example.android.uamp.utils.LogHelper;
 /**
  * Main activity for the Android TV user interface.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvBrowseActivity extends Activity
         implements TvBrowseFragment.MediaFragmentListener {
 

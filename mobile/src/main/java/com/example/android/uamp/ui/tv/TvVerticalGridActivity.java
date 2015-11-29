@@ -15,16 +15,19 @@
  */
 package com.example.android.uamp.ui.tv;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.media.browse.MediaBrowser;
 import android.media.session.MediaController;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.android.uamp.MusicService;
 import com.example.android.uamp.R;
 import com.example.android.uamp.utils.LogHelper;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TvVerticalGridActivity extends Activity
         implements TvVerticalGridFragment.MediaFragmentListener {
 
