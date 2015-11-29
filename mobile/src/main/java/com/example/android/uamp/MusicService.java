@@ -261,6 +261,9 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                 } else if (CMD_STOP_CASTING.equals(command)) {
                     mCastManager.disconnect();
                 }
+            } else if (Intent.ACTION_MEDIA_BUTTON.equals(action)) {
+                KeyEvent ke = startIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                onMediaButtonEvent(ke);
             }
         }
         // Reset the delay handler to enqueue a message to stop the service if
@@ -268,6 +271,57 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         return START_STICKY;
+    }
+
+    // KeyEvent constants only available on API 11+
+    private static final int KEYCODE_MEDIA_PAUSE = 127;
+    private static final int KEYCODE_MEDIA_PLAY = 126;
+    private void onMediaButtonEvent(KeyEvent ke) {
+        if (ke == null || ke.getAction() != KeyEvent.ACTION_DOWN) {
+            return;
+        }
+
+        MediaControllerCompat.TransportControls transportControls = mSession.getController()
+                .getTransportControls();
+        long validActions = getAvailableActions();
+        switch (ke.getKeyCode()) {
+            // Note KeyEvent.KEYCODE_MEDIA_PLAY is API 11+
+            case KEYCODE_MEDIA_PLAY:
+                transportControls.play();
+                break;
+            // Note KeyEvent.KEYCODE_MEDIA_PAUSE is API 11+
+            case KEYCODE_MEDIA_PAUSE:
+                transportControls.pause();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                transportControls.skipToNext();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                transportControls.skipToPrevious();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+                transportControls.stop();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                transportControls.fastForward();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                transportControls.rewind();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                boolean isPlaying = mPlayback.isPlaying();
+                boolean canPlay = (validActions & (PlaybackStateCompat.ACTION_PLAY_PAUSE
+                        | PlaybackStateCompat.ACTION_PLAY)) != 0;
+                boolean canPause = (validActions & (PlaybackStateCompat.ACTION_PLAY_PAUSE
+                        | PlaybackStateCompat.ACTION_PAUSE)) != 0;
+                if (isPlaying && canPause) {
+                    transportControls.pause();
+                } else if (!isPlaying && canPlay) {
+                    transportControls.play();
+                }
+                break;
+        }
     }
 
     /**
