@@ -128,6 +128,8 @@ public class MediaNotificationManager extends BroadcastReceiver {
                 mService.registerReceiver(this, filter);
 
                 mService.startForeground(NOTIFICATION_ID, notification);
+                // Fix flicker when update notification the first time
+                mNotificationManager.notify(NOTIFICATION_ID, createNotification());
                 mStarted = true;
             }
         }
