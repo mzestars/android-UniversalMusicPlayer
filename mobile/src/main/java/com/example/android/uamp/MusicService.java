@@ -175,6 +175,16 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
         }
 
         @Override
+        public void onDisconnectionReason(int reason) {
+            LogHelper.d(TAG, "onDisconnectionReason");
+            // This is our final chance to update the underlying stream position
+            // In onDisconnected(), the underlying CastPlayback#mVideoCastConsumer
+            // is disconnected and hence we update our local value of stream position
+            // to the latest position.
+            mPlayback.updateLastKnownStreamPosition();
+        }
+
+        @Override
         public void onDisconnected() {
             LogHelper.d(TAG, "onDisconnected");
             mSessionExtras.remove(EXTRA_CONNECTED_CAST);
@@ -592,14 +602,30 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
             }
         }
 
+        /**
+         * Handle free and contextual searches.
+         *
+         * All voice searches on Android Auto are sent to this method through a connected
+         * {@link android.media.session.MediaController}.
+         * <p>
+         * Threads and async handling:
+         * In a real world application, searching should run in another thread.
+         *
+         * Since this method runs on the main thread, most apps with non-trivial metadata
+         * should defer the actual search to another thread (for example, by using
+         * an {@link android.os.AsyncTask}).
+         *
+         * Since our media metadata is very small, it is entirely loaded into
+         * memory during the {@link MusicProvider} initialization, and searching is an
+         * O(n) operation on a very small in-memory dataset. We only use an AsyncTask to wait
+         * if the {@link MusicProvider} has not yet been initialized.
+         **/
         @Override
         public void onPlayFromSearch(final String query, final Bundle extras) {
             LogHelper.d(TAG, "playFromSearch  query=", query, " extras=", extras);
 
             mPlayback.setState(PlaybackStateCompat.STATE_CONNECTING);
 
-            // Voice searches may occur before the media catalog has been
-            // prepared. We only handle the search after the musicProvider is ready.
             mMusicProvider.retrieveMediaAsync(new MusicProvider.Callback() {
                 @Override
                 public void onMusicCatalogReady(boolean success) {
@@ -887,7 +913,6 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
         int oldState = mPlayback.getState();
         int pos = mPlayback.getCurrentStreamPosition();
         String currentMediaId = mPlayback.getCurrentMediaId();
-        LogHelper.d(TAG, "Current position from " + playback + " is ", pos);
         mPlayback.stop(false);
         playback.setCallback(this);
         playback.setCurrentStreamPosition(pos < 0 ? 0 : pos);
